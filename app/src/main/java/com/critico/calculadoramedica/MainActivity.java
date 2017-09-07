@@ -1,43 +1,38 @@
 package com.critico.calculadoramedica;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.critico.calculadoramedica.activity.CalendarioActivity;
 import com.critico.calculadoramedica.activity.ResultadosActivity;
+
+import java.sql.Date;
+
 
 public class MainActivity extends AppCompatActivity
 {
-
     private Spinner listaActividades;
     private ArrayAdapter sp;
-
-    private Button calendario;
-    private Button calculadora;
-    private Button calcular;
-    private EditText peso;
-    private EditText estatura;
-    private EditText edad;
-    private RadioButton rgbHombre;
-    private RadioButton rgbMujer;
-
-    private int mb;
-    private int cmp;
-    private int cb;
-    private int cs;
-
-    private int varEstatura;
-    private int varPeso;
-    private int varEdad;
+    private Button botonCalendario, botonCalculadora, botonCalcular;
+    private EditText peso, estatura, edad;
+    private TextView texFecha;
+    private RadioButton rgbHombre, rgbMujer;
+    private int dia, mes, ano;
+    private int mb, cmp, cb, cs;
+    private int varEstatura, varPeso, varEdad;
     private String actividad;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,9 +46,24 @@ public class MainActivity extends AppCompatActivity
         sp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listaActividades.setAdapter(sp);
 
-        calcular = (Button) findViewById(R.id.btnCalcular);
+        botonCalcular = (Button)findViewById(R.id.btnCalcular);
+        botonCalendario = (Button)findViewById(R.id.btnCalendario);
+        texFecha = (TextView)findViewById(R.id.txtFechaNac);
 
-        calcular.setOnClickListener(new View.OnClickListener()
+        int intTmb = getIntent().getIntExtra("Fecha", 0);
+        texFecha.setText(""+intTmb);
+
+        botonCalendario.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), CalendarioActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        botonCalcular.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -139,7 +149,6 @@ public class MainActivity extends AppCompatActivity
         cs = (int)cmp + (cmp*15/100);
     }
 
-
     public void enviarDatos()
     {
         Intent intent = new Intent(getApplicationContext(), ResultadosActivity.class);
@@ -151,4 +160,5 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(intent);
     }
+
 }
